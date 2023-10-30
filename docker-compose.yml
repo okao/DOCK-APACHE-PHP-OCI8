@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  myapp-oci8:
+    build:
+      context: .
+      dockerfile: Dockerfile.yml
+    image: php-apache-oci8
+    container_name: myapp-oci8
+    restart: always
+    tty: true
+    ports:
+      - "8002:80"
+    volumes:
+      - ./config/apache/apache2.conf:/etc/apache2/apache2.conf
+      - ./www:/var/www/
+      - ./config/apache/apache-vhosts.conf:/etc/apache2/sites-enabled/000-default.conf
+      - ./config/hosts:/etc/hosts
+      - ./config/php/php.conf:/etc/php/8.2/apache2/php.ini
+    links:
+      - mydb
+  mydb:
+    image: mariadb
+    restart: always
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "33062:3306"
+#Volumes
+volumes:
+  myapp-oci8:
+    driver: local
