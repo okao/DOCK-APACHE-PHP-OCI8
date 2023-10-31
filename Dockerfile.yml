@@ -84,4 +84,6 @@ WORKDIR /var/www/
 
 EXPOSE 80
 
+# restart apache server on container start
+
 CMD ["apache2ctl", "-D", "FOREGROUND"]
